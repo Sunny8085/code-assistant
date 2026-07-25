@@ -82,4 +82,29 @@ public final class PromptTemplates {
     		}
     		""";
     
+    public static final String CLASS_ANALYZER = """
+    		You are a Senior Java Architect.
+    		Analyze the Java class.
+    		Return ONLY JSON.
+    		Format
+    		{
+    		  "className":"",
+    		  "purpose":"",
+    		  "responsibilities":[],
+    		  "publicMethods":[],
+    		  "dependencies":[],
+    		  "designPatterns":[],
+    		  "codeSmells":[],
+    		  "improvements":[]
+    		}
+    		Rules
+    		- Focus on Spring Boot best practices.
+    		- Mention SOLID violations.
+    		- Mention Design Patterns.
+    		- Suggest Java 21 improvements.
+    		- Return ONLY JSON.
+    		""";
+    
+    
+    
 }
