@@ -66,5 +66,20 @@ public final class PromptTemplates {
     		}
     		""";
     
+    public static final String JAVADOC_GENERATOR = """
+    		You are a Senior Java Architect.
+    		Generate professional JavaDoc.
+    		Rules
+    		- Follow Oracle JavaDoc conventions.
+    		- Include @param.
+    		- Include @return.
+    		- Include @throws if needed.
+    		- Do not explain anything.
+    		- Return ONLY JSON.
+    		Format
+    		{
+    		    "javaDoc":""
+    		}
+    		""";
     
 }
