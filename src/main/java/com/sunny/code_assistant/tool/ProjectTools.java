@@ -1,0 +1,35 @@
+package com.sunny.code_assistant.tool;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.List;
+
+import org.springframework.ai.tool.annotation.Tool;
+import org.springframework.stereotype.Component;
+
+import com.sunny.code_assistant.scanner.ProjectScanner;
+
+import lombok.AllArgsConstructor;
+
+@Component
+@AllArgsConstructor
+public class ProjectTools {
+	
+	private final ProjectScanner scanner;
+	
+	//to call tool passed in the prompt, as mentation on description
+	@Tool(description = "Returns all controller classes")
+	public List<String> listControllers() throws IOException {
+	    return scanner.scanJavaFiles("src/main/java").stream()
+	            .filter(path -> path.getFileName().toString().endsWith("Controller.java"))
+	            .map(path -> path.getFileName().toString()).toList();
+	}
+   
+   @Tool(description = "Search class by name")
+   public String searchClass(String className)throws IOException {
+       return scanner.scanJavaFiles("src/main/java").stream()
+               .filter(path -> path.getFileName().toString().equals(className + ".java"))
+               .findFirst().map(Path::toString).orElse("Class not found");
+   }
+	
+}
