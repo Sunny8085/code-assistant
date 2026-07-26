@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.sunny.code_assistant.model.IndexedClass;
 import com.sunny.code_assistant.model.ProjectIndex;
+import com.sunny.code_assistant.model.ProjectRelation;
 import com.sunny.code_assistant.scanner.ProjectScanner;
 
 import lombok.AllArgsConstructor;
@@ -34,6 +35,18 @@ public class ProjectTools {
 		return index.getClasses().stream()
 				.filter(c ->c.className().equalsIgnoreCase(className))
 	             .findFirst().orElse(null);
+	}
+	
+	@Tool(description="Find class dependencies")
+	public List<ProjectRelation> dependencies(String className){
+	    return index.getRelations().stream()
+	            .filter(r->r.source().equals(className)).toList();
+	}
+	
+	@Tool(description="Find usages")
+	public List<ProjectRelation> usages(String className){
+	    return index.getRelations().stream()
+	            .filter(r->r.target().equals(className)).toList();
 	}
 	
 //	@Tool(description = "Returns all controller classes")

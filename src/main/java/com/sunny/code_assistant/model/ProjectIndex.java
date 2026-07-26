@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 public class ProjectIndex {
 
     private final List<IndexedClass> classes = new ArrayList<>();
+    
+    private final List<ProjectRelation> relations = new ArrayList<>();
 
     public void clear() {
         classes.clear();
@@ -21,5 +23,13 @@ public class ProjectIndex {
     public List<IndexedClass> getClasses() {
         return classes;
     }
-
+    
+    public void addRelation(ProjectRelation relation) {
+		relations.add(relation);
+	}
+    
+    public List<ProjectRelation> getRelations() {
+		return relations;
+	}
+    
 }
