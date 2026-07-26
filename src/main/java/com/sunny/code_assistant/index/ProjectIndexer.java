@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.sunny.code_assistant.dto.FieldInfo;
 import com.sunny.code_assistant.dto.JavaFileInfo;
 import com.sunny.code_assistant.model.IndexedClass;
 import com.sunny.code_assistant.model.ProjectIndex;
@@ -35,9 +36,9 @@ public class ProjectIndexer {
             index.add(clazz);
             
             //Add Class Relation Ship Logic 
-            for (String field : info.fields()) {
-                if (field.contains("Service")) {
-                    index.addRelation(new ProjectRelation(info.className(), info.className(), "USES"));
+            for (FieldInfo field : info.fields()) {
+                if (field.type().endsWith("Service")) {
+                    index.addRelation(new ProjectRelation(info.className(), field.type(), "USES"));
                 }
             }
         }

@@ -36,8 +36,8 @@ public class ClassAnalysisService {
 	    .formatted(
 	    info.packageName(),
 	    info.className(),
-	    String.join("\n",info.methods()),
-	    String.join("\n",info.fields()),
+	    info.methods(),
+	    info.fields(),
 	    String.join("\n",info.imports())
 	    );
     }

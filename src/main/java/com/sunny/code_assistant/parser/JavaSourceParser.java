@@ -9,7 +9,9 @@ import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.ParserConfiguration.LanguageLevel;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.sunny.code_assistant.dto.FieldInfo;
 import com.sunny.code_assistant.dto.JavaFileInfo;
+import com.sunny.code_assistant.dto.MethodInfo;
 
 @Component
 public class JavaSourceParser {
@@ -36,12 +38,23 @@ public class JavaSourceParser {
 
         String className = clazz.getNameAsString();
 
-        List<String> methods = clazz.findAll(MethodDeclaration.class).stream()
-                .map(MethodDeclaration::getDeclarationAsString).toList();
+        List<FieldInfo> fields = clazz.findAll(FieldDeclaration.class).stream()
+                .map(field -> new FieldInfo(field.getElementType().asString(), field.getVariables().get(0).getNameAsString(),
+                        field.getAnnotations().stream()
+                                .map(a -> a.getNameAsString()).toList(),
+                        field.getModifiers().stream()
+                                .map(m -> m.getKeyword().asString()).toList()
+                )).toList();
 
-        List<String> fields = clazz.findAll(FieldDeclaration.class).stream()
-                .map(FieldDeclaration::toString).toList();
-
+        List<MethodInfo> methods = clazz.findAll(MethodDeclaration.class).stream()
+                .map(method -> new MethodInfo(method.getNameAsString(), method.getType().asString(),
+                        method.getParameters().stream()
+                                .map(p -> p.getType().asString() + " " + p.getNameAsString()).toList(),
+                        method.getAnnotations().stream()
+                                .map(a -> a.getNameAsString()).toList()
+                ))
+                .toList();
+        
         return new JavaFileInfo(packageName, className, methods, fields, imports);
     }
 
