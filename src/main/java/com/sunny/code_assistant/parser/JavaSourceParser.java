@@ -25,37 +25,43 @@ public class JavaSourceParser {
 	}
 	
     public JavaFileInfo parse(String source) {
-        var cu = javaParser.parse(source).getResult().orElseThrow(() ->
-            new IllegalArgumentException("Failed to parse source code"));
-
-        String packageName = cu.getPackageDeclaration()
-                .map(pd -> pd.getNameAsString()).orElse("");
-
-        List<String> imports = cu.getImports().stream()
-                .map(i -> i.getNameAsString()).toList();
-
-        var clazz = cu.getType(0);
-
-        String className = clazz.getNameAsString();
-
-        List<FieldInfo> fields = clazz.findAll(FieldDeclaration.class).stream()
-                .map(field -> new FieldInfo(field.getElementType().asString(), field.getVariables().get(0).getNameAsString(),
-                        field.getAnnotations().stream()
-                                .map(a -> a.getNameAsString()).toList(),
-                        field.getModifiers().stream()
-                                .map(m -> m.getKeyword().asString()).toList()
-                )).toList();
-
-        List<MethodInfo> methods = clazz.findAll(MethodDeclaration.class).stream()
-                .map(method -> new MethodInfo(method.getNameAsString(), method.getType().asString(),
-                        method.getParameters().stream()
-                                .map(p -> p.getType().asString() + " " + p.getNameAsString()).toList(),
-                        method.getAnnotations().stream()
-                                .map(a -> a.getNameAsString()).toList()
-                ))
-                .toList();
-        
-        return new JavaFileInfo(packageName, className, methods, fields, imports);
+    		try {
+	        var cu = javaParser.parse(source).getResult().orElseThrow(() ->
+	            new IllegalArgumentException("Failed to parse source code"));
+	
+	        String packageName = cu.getPackageDeclaration()
+	                .map(pd -> pd.getNameAsString()).orElse("");
+	
+	        List<String> imports = cu.getImports().stream()
+	                .map(i -> i.getNameAsString()).toList();
+	        
+	        if(cu.getTypes().isEmpty())
+	        		return null;
+	        var clazz = cu.getType(0);
+	
+	        String className = clazz.getNameAsString();
+	
+	        List<FieldInfo> fields = clazz.findAll(FieldDeclaration.class).stream()
+	                .map(field -> new FieldInfo(field.getElementType().asString(), field.getVariables().get(0).getNameAsString(),
+	                        field.getAnnotations().stream()
+	                                .map(a -> a.getNameAsString()).toList(),
+	                        field.getModifiers().stream()
+	                                .map(m -> m.getKeyword().asString()).toList()
+	                )).toList();
+	
+	        List<MethodInfo> methods = clazz.findAll(MethodDeclaration.class).stream()
+	                .map(method -> new MethodInfo(method.getNameAsString(), method.getType().asString(),
+	                        method.getParameters().stream()
+	                                .map(p -> p.getType().asString() + " " + p.getNameAsString()).toList(),
+	                        method.getAnnotations().stream()
+	                                .map(a -> a.getNameAsString()).toList()
+	                ))
+	                .toList();
+	        
+	        return new JavaFileInfo(packageName, className, methods, fields, imports);
+    		}catch(Exception e) {
+    			throw new RuntimeException("Unable to parse Java source", e);
+    		}
     }
 
 	

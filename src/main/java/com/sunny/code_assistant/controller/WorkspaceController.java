@@ -15,13 +15,16 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/workspace")
+@RequestMapping("/api/v1/workspace")
 public class WorkspaceController {
 
     private final WorkspaceService workspaceService;
 
     @PostMapping("/upload")
     public ResponseEntity<RestApiResponse> upload(@RequestParam MultipartFile file) throws Exception {
+	    	if (!file.getOriginalFilename().endsWith(".zip")) {
+	    	    throw new IllegalArgumentException("Only ZIP files are supported.");
+	    	}
         workspaceService.loadWorkspace(file);
         return new ResponseEntity<>(new RestApiResponse(true, "Workspace indexed successfully."), HttpStatus.CREATED);
     }

@@ -1,5 +1,6 @@
 package com.sunny.code_assistant.index;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -25,17 +26,27 @@ public class ProjectIndexer {
     
     public void indexProject(String root) throws Exception {
         index.clear();
+        
+        // Validate root directory exists
+        Path rootPath = Path.of(root);
+        if (!Files.exists(rootPath))
+            throw new RuntimeException("Root directory not found: " + root);
+        if (!Files.isDirectory(rootPath))
+            throw new IllegalArgumentException("Root path is not a directory: " + root);
+        
         List<Path> files = scanner.scanJavaFiles(root);
         for (Path path : files) {
             String source = scanner.readFile(path);
             JavaFileInfo info = parser.parse(source);
+            if(info == null)
+            		continue;
             IndexedClass clazz = new IndexedClass(
                     info.packageName(), info.className(), path.toString(), info.methods(), info.fields(),
                     List.of()
             );
             index.add(clazz);
             
-            //Add Class Relation Ship Logic 
+            //Add Class Relationship Logic
             for (FieldInfo field : info.fields()) {
                 if (field.type().endsWith("Service")) {
                     index.addRelation(new ProjectRelation(info.className(), field.type(), "USES"));
