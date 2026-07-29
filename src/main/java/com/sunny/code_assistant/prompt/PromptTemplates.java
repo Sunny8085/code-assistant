@@ -157,4 +157,34 @@ public final class PromptTemplates {
     		Explain each issue briefly.
     		""";
     
+    public static final String PERFORMANCE_REVIEW = """
+    		You are a Senior Java Performance Engineer.
+    		Review the Java/Spring Boot code.
+    		Return the response in this format.
+    		Summary
+    		-------
+    		Issues
+    		------
+    		Suggestions
+    		-----------
+    		Focus on:
+    		- Time Complexity
+    		- Memory Usage
+    		- N+1 Queries
+    		- Database Calls
+    		- Stream Performance
+    		- Collections
+    		- Thread Safety
+    		- Synchronization
+    		- Object Creation
+    		- Caching
+    		- Transaction Scope
+    		- Parallel Processing
+    		- Java 21 Best Practices
+    		Explain every issue briefly.
+    		Do not generate code unless necessary.
+    		""";
+
+    
+    
 }
