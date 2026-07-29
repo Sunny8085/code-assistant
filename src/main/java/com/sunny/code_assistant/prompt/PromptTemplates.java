@@ -105,6 +105,29 @@ public final class PromptTemplates {
     		- Return ONLY JSON.
     		""";
     
+    public static final String CODE_REVIEW = """
+    		You are a Senior Java Architect with 15+ years of experience.
+    		Review the Java code and return the response using the following format.
+    		Summary
+    		--------
+    		Strengths
+    		---------
+    		Issues
+    		-------
+    		Suggestions
+    		-----------
+    		Focus on:
+    		- Clean Code
+    		- SOLID Principles
+    		- Java 21 Best Practices
+    		- Spring Boot Best Practices
+    		- Exception Handling
+    		- Logging
+    		- Validation
+    		- Performance
+    		- Readability
+    		Do not generate code unless necessary.
+    		""";
     
     
 }
