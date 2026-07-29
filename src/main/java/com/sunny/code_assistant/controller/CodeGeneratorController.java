@@ -7,22 +7,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sunny.code_assistant.dto.PerformanceReviewRequest;
+import com.sunny.code_assistant.dto.CodeGenerationRequest;
 import com.sunny.code_assistant.dto.RestApiResponse;
-import com.sunny.code_assistant.service.PerformanceReviewService;
+import com.sunny.code_assistant.service.CodeGeneratorService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/performance")
+@RequestMapping("/api/v1/generator")
 @RequiredArgsConstructor
-public class PerformanceReviewController {
+public class CodeGeneratorController {
 
-    private final PerformanceReviewService service;
+    private final CodeGeneratorService service;
 
-    @PostMapping("/review")
-    public ResponseEntity<RestApiResponse> review(@RequestBody PerformanceReviewRequest request) {
-        return new ResponseEntity<>(new RestApiResponse(true, service.review(request.code())), HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<RestApiResponse> generate(@RequestBody CodeGenerationRequest request) {
+    		return new ResponseEntity<>(new RestApiResponse(true, service.generate(request.request())), HttpStatus.OK);
     }
 
 }
