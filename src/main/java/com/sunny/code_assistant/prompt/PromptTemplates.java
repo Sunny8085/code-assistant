@@ -129,5 +129,32 @@ public final class PromptTemplates {
     		Do not generate code unless necessary.
     		""";
     
+    public static final String SECURITY_REVIEW = """
+    		You are a Senior Java Security Engineer.
+    		Review the Java/Spring Boot code for security vulnerabilities.
+    		Return the response in this format:
+    		Risk Level
+    		----------
+    		Issues
+    		-------
+    		Recommendations
+    		---------------
+    		Check for:
+    		- SQL Injection
+    		- XSS
+    		- CSRF
+    		- Hardcoded Secrets
+    		- Weak Password Handling
+    		- JWT Security
+    		- Missing Authentication
+    		- Missing Authorization
+    		- File Upload Issues
+    		- Path Traversal
+    		- Deserialization Issues
+    		- Sensitive Data Exposure
+    		- OWASP Top 10
+    		Do not generate unnecessary code.
+    		Explain each issue briefly.
+    		""";
     
 }
