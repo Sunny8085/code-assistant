@@ -11,7 +11,8 @@ public record IndexedClass(
     String filePath,
     List<MethodInfo> methods,
     List<FieldInfo> fields,
-    List<String> annotations
+    List<String> annotations,
+    float[] embedding
 	) {
 
 }

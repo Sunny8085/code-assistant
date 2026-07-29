@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 
 import com.sunny.code_assistant.dto.FieldInfo;
 import com.sunny.code_assistant.dto.JavaFileInfo;
+import com.sunny.code_assistant.embedding.EmbeddingBuilder;
 import com.sunny.code_assistant.model.IndexedClass;
 import com.sunny.code_assistant.model.ProjectIndex;
 import com.sunny.code_assistant.model.ProjectRelation;
 import com.sunny.code_assistant.parser.JavaSourceParser;
 import com.sunny.code_assistant.scanner.ProjectScanner;
+import com.sunny.code_assistant.service.EmbeddingService;
 
 import lombok.AllArgsConstructor;
 
@@ -23,6 +25,8 @@ public class ProjectIndexer {
     private final ProjectScanner scanner;
     private final JavaSourceParser parser;
     private final ProjectIndex index;
+    private final EmbeddingBuilder embeddingBuilder;
+    private final EmbeddingService embeddingService;
     
     public void indexProject(String root) throws Exception {
         index.clear();
@@ -30,7 +34,7 @@ public class ProjectIndexer {
         // Validate root directory exists
         Path rootPath = Path.of(root);
         if (!Files.exists(rootPath))
-            throw new RuntimeException("Root directory not found: " + root);
+            throw new IllegalArgumentException("Root directory not found: " + root);
         if (!Files.isDirectory(rootPath))
             throw new IllegalArgumentException("Root path is not a directory: " + root);
         
@@ -38,12 +42,15 @@ public class ProjectIndexer {
         for (Path path : files) {
             String source = scanner.readFile(path);
             JavaFileInfo info = parser.parse(source);
-            if(info == null)
-            		continue;
+            
+            if(info == null)	continue;
+            
+            String content = embeddingBuilder.build(info);
+            float[] embedding = embeddingService.embed(content);
+            
             IndexedClass clazz = new IndexedClass(
                     info.packageName(), info.className(), path.toString(), info.methods(), info.fields(),
-                    List.of()
-            );
+                    List.of(),embedding);
             index.add(clazz);
             
             //Add Class Relationship Logic
