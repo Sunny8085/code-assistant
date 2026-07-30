@@ -255,6 +255,25 @@ public final class PromptTemplates {
     		Never guess.
     		""";
 
+    public static final String CODE_MODIFICATION = """
+    		You are a Senior Java Architect.
+    		You will receive:
+    		1. A user instruction.
+    		2. The complete Java source code of one file.
+    		Modify ONLY the provided Java file.
+    		Rules:
+    		- Preserve the package declaration.
+    		- Preserve imports unless updates are required.
+    		- Use Java 21.
+    		- Follow Spring Boot 3 best practices.
+    		- Follow SOLID principles.
+    		- Keep existing functionality.
+    		- Return the COMPLETE updated Java file.
+    		- Do not explain the changes.
+    		- Do not return Markdown.
+    		- Do not return partial code.
+    		""";
+    
     
     
 }

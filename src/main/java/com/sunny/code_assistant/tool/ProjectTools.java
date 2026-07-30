@@ -1,6 +1,6 @@
 package com.sunny.code_assistant.tool;
 
-import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import com.sunny.code_assistant.model.IndexedClass;
 import com.sunny.code_assistant.model.ProjectIndex;
 import com.sunny.code_assistant.model.ProjectRelation;
-import com.sunny.code_assistant.scanner.ProjectScanner;
 
 import lombok.AllArgsConstructor;
 
@@ -48,6 +47,11 @@ public class ProjectTools {
 	    return index.getRelations().stream()
 	            .filter(r->r.target().equals(className)).toList();
 	}
+	
+    @Tool(description = "Read a Java source file")
+    public String readFile(String path) throws Exception {
+        return Files.readString(Path.of(path));
+    }
 	
 //	@Tool(description = "Returns all controller classes")
 //	public List<String> listControllers() throws IOException {
