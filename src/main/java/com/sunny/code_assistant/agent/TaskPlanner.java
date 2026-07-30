@@ -8,23 +8,27 @@ import org.springframework.stereotype.Component;
 @Component
 public class TaskPlanner {
 
-    public List<String> plan(String task) {
-        List<String> steps = new ArrayList<>();
+    public List<AgentAction> plan(String task) {
+        List<AgentAction> actions = new ArrayList<>();
         String lower = task.toLowerCase();
-        if (lower.contains("controller")) {
-            steps.add("SEARCH_CLASS");
-            steps.add("READ_FILE");
+        if (lower.contains("employeecontroller")) {
+            actions.add(new AgentAction("SEARCH_CLASS", "EmployeeController"));
+            actions.add(new AgentAction("READ_FILE", "EmployeeController"));
         }
-        if (lower.contains("service")) {
-            steps.add("SEARCH_CLASS");
-            steps.add("READ_FILE");
+
+        if (lower.contains("employeeservice")) {
+            actions.add(new AgentAction("SEARCH_CLASS", "EmployeeService"));
+            actions.add(new AgentAction("READ_FILE", "EmployeeService"));
         }
+
         if (lower.contains("dependency")) {
-            steps.add("FIND_DEPENDENCIES");
+            actions.add(new AgentAction("DEPENDENCIES", "EmployeeService"));
         }
-        if (steps.isEmpty()) {
-            steps.add("CHAT");
+
+        if (lower.contains("controller")) {
+            actions.add(new AgentAction("LIST_CONTROLLERS",""));
         }
-        return steps;
+        return actions;
     }
+
 }

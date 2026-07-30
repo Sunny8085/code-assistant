@@ -14,21 +14,25 @@ import lombok.RequiredArgsConstructor;
 public class AgentService {
 
     private final TaskPlanner planner;
+    private final AgentExecutor executor;
     private final AIService aiService;
 
     public String execute(String task) throws Exception {
-        List<String> steps = planner.plan(task);
-        StringBuilder userPrompt = new StringBuilder();
-
-        userPrompt.append("User Task:\n").append(task).append("\n\n");
-        userPrompt.append("Execution Plan:\n");
-
-        for (String step : steps) {
-            userPrompt.append("- ").append(step).append("\n");
+        List<AgentAction> actions = planner.plan(task);
+        StringBuilder context = new StringBuilder();
+        for (AgentAction action : actions) {
+            String result = executor.execute(action.step(), action.target());
+            context.append("""
+                    Step:
+                    %s
+                    Result:
+                    %s
+                    ===================
+                    """
+                    .formatted(action.step(),result));
         }
 
-        return aiService.chat(PromptTemplates.AGENT_SYSTEM_PROMPT,userPrompt.toString());
-
+        return aiService.chat(PromptTemplates.AGENT_SYSTEM_PROMPT, context.toString());
     }
 
 }
