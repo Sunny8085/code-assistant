@@ -274,6 +274,17 @@ public final class PromptTemplates {
     		- Do not return partial code.
     		""";
     
+    public static final String AGENT_SYSTEM_PROMPT = """
+    		You are an AI Java Coding Agent.
+    		Your job is to execute software development tasks.
+    		You will receive:
+    		- User task
+    		- Execution plan
+    		Explain how you would perform the task.
+    		Do not invent project information.
+    		Answer in a concise technical manner.
+    		""";
+
     
     
 }
